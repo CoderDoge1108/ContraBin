@@ -1,0 +1,44 @@
+# Tiny config used by tests and the smoke-test CLI invocation.
+experiment_name: contrabin-smoke
+
+data:
+  dataset_name: synthetic
+  train_path: data/samples/train.jsonl
+  val_path: data/samples/val.jsonl
+  source_max_length: 64
+  binary_max_length: 64
+  comment_max_length: 16
+  use_llm_comments: true
+  num_workers: 0
+
+model:
+  encoder_name: contrabin-tiny
+  hidden_dim: 32
+  projection_dim: 16
+  head_type: linear
+  dropout: 0.0
+  temperature: 0.1
+  stop_gradient_on_anchor: true
+
+optim:
+  lr: 1.0e-3
+  head_lr: 1.0e-3
+  weight_decay: 0.0
+  warmup_steps: 0
+  max_grad_norm: 1.0
+  scheduler: constant
+
+training:
+  batch_size: 4
+  eval_batch_size: 4
+  seed: 0
+  device: cpu
+  mixed_precision: no
+  log_every_n_steps: 1
+  eval_every_n_steps: 10
+  save_every_n_steps: 1000
+  output_dir: outputs/smoke
+  curriculum:
+    primary_epochs: 1
+    linear_epochs: 1
+    nonlinear_epochs: 1

@@ -1,0 +1,39 @@
+experiment_name: contrabin-finetune-poj104
+
+data:
+  dataset_name: poj104
+  train_path: data/poj104/train.jsonl
+  val_path: data/poj104/val.jsonl
+  test_path: data/poj104/test.jsonl
+  source_max_length: 512
+  binary_max_length: 512
+  comment_max_length: 32
+  num_workers: 4
+
+model:
+  encoder_name: microsoft/graphcodebert-base
+  hidden_dim: 768
+  projection_dim: 256
+  head_type: linear
+  dropout: 0.1
+  temperature: 0.1
+
+optim:
+  lr: 2.0e-5
+  head_lr: 1.0e-3
+  weight_decay: 1.0e-2
+  warmup_steps: 200
+  scheduler: linear
+
+training:
+  batch_size: 16
+  eval_batch_size: 32
+  seed: 42
+  mixed_precision: fp16
+  log_every_n_steps: 50
+  eval_every_n_steps: 500
+  output_dir: outputs/poj104
+  curriculum:
+    primary_epochs: 0
+    linear_epochs: 0
+    nonlinear_epochs: 5

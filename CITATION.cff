@@ -1,0 +1,52 @@
+cff-version: 1.2.0
+message: "If you use ContraBin in your research, please cite both the TMLR paper and this software."
+type: software
+title: "ContraBin: Contrastive Pre-Training of Binary Code Representations"
+version: 0.2.0
+doi: 10.5281/zenodo.15219264
+url: https://github.com/CoderDoge1108/ContraBin
+repository-code: https://github.com/CoderDoge1108/ContraBin
+license: MIT
+authors:
+  - family-names: Zhang
+    given-names: Yifan
+    orcid: https://orcid.org/0000-0000-0000-0000
+    affiliation: Vanderbilt University
+  - family-names: Huang
+    given-names: Chen
+    affiliation: National University of Singapore
+  - family-names: Zhang
+    given-names: Yueke
+    affiliation: Vanderbilt University
+  - family-names: Shao
+    given-names: Huajie
+    affiliation: College of William & Mary
+  - family-names: Leach
+    given-names: Kevin
+    affiliation: Vanderbilt University
+  - family-names: Huang
+    given-names: Yu
+    affiliation: Vanderbilt University
+preferred-citation:
+  type: article
+  title: "Pre-Training Representations of Binary Code Using Contrastive Learning"
+  journal: "Transactions on Machine Learning Research (TMLR)"
+  year: 2025
+  url: https://openreview.net/forum?id=qmfUL6D0iz
+  identifiers:
+    - type: other
+      value: "arXiv:2210.05102"
+      description: arXiv preprint
+  authors:
+    - family-names: Zhang
+      given-names: Yifan
+    - family-names: Huang
+      given-names: Chen
+    - family-names: Zhang
+      given-names: Yueke
+    - family-names: Shao
+      given-names: Huajie
+    - family-names: Leach
+      given-names: Kevin
+    - family-names: Huang
+      given-names: Yu
