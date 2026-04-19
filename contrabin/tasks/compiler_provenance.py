@@ -47,12 +47,8 @@ from contrabin.models.contrabin import ContraBinModel
 class ProvenanceLabelSpace:
     """Closed-world label vocabularies used by the three provenance heads."""
 
-    compilers: list[str] = field(
-        default_factory=lambda: ["gcc", "clang", "msvc", "icc", "unknown"]
-    )
-    opt_levels: list[str] = field(
-        default_factory=lambda: ["O0", "O1", "O2", "O3", "Os", "Oz"]
-    )
+    compilers: list[str] = field(default_factory=lambda: ["gcc", "clang", "msvc", "icc", "unknown"])
+    opt_levels: list[str] = field(default_factory=lambda: ["O0", "O1", "O2", "O3", "Os", "Oz"])
     languages: list[str] = field(
         default_factory=lambda: ["c", "cpp", "rust", "go", "fortran", "unknown"]
     )
@@ -206,9 +202,8 @@ def train_compiler_provenance(
             am = batch["binary"]["attention_mask"].to(device)
             targets = _collect_targets(batch, model.label_space, device)
             logits = model(ids, am)
-            loss = sum(
-                weights[k] * F.cross_entropy(logits[k], targets[k]) for k in weights
-            )
+            losses = [weights[k] * F.cross_entropy(logits[k], targets[k]) for k in weights]
+            loss = torch.stack(losses).sum()
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             optimizer.step()
@@ -221,9 +216,7 @@ def train_compiler_provenance(
 
 
 @torch.no_grad()
-def _evaluate(
-    model: CompilerProvenanceModel, loader: DataLoader, device: str
-) -> dict[str, float]:
+def _evaluate(model: CompilerProvenanceModel, loader: DataLoader, device: str) -> dict[str, float]:
     model.eval()
     preds: dict[str, list[int]] = {k: [] for k in ("compiler", "opt_level", "language")}
     targs: dict[str, list[int]] = {k: [] for k in ("compiler", "opt_level", "language")}

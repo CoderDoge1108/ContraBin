@@ -40,9 +40,7 @@ class LoggingCallback(Callback):
         self._log.info("Starting training")
 
     def on_epoch_begin(self, trainer: TrainerLike) -> None:
-        self._log.info(
-            "Epoch %d | stage=%s", trainer.state.epoch, trainer.state.stage
-        )
+        self._log.info("Epoch %d | stage=%s", trainer.state.epoch, trainer.state.stage)
 
     def on_step_end(self, trainer: TrainerLike, step: int, loss: float) -> None:
         if step % self.log_every == 0:

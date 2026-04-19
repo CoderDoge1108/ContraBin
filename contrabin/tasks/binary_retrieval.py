@@ -92,9 +92,7 @@ def extract_binary_embeddings(
     return torch.cat(embs, dim=0), labels
 
 
-def evaluate_retrieval(
-    embeddings: torch.Tensor, labels: list[int]
-) -> RetrievalResult:
+def evaluate_retrieval(embeddings: torch.Tensor, labels: list[int]) -> RetrievalResult:
     """Compute mAP / MRR / Recall@k from the embedding matrix and labels."""
     if embeddings.numel() == 0:
         return RetrievalResult(0.0, 0.0, 0.0, 0.0, 0.0)
@@ -152,9 +150,7 @@ def train_linear_probe(
 ) -> list[dict[str, float]]:
     """Fit the linear probe on top of frozen embeddings."""
     model.to(device)
-    optimizer = torch.optim.AdamW(
-        model.head.parameters(), lr=head_lr, weight_decay=weight_decay
-    )
+    optimizer = torch.optim.AdamW(model.head.parameters(), lr=head_lr, weight_decay=weight_decay)
     history: list[dict[str, float]] = []
     for epoch in range(num_epochs):
         model.train()
@@ -162,9 +158,7 @@ def train_linear_probe(
         for batch in train_loader:
             ids = batch["binary"]["input_ids"].to(device)
             am = batch["binary"]["attention_mask"].to(device)
-            labels = torch.tensor(
-                [int(m[label_key]) for m in batch["metadata"]], device=device
-            )
+            labels = torch.tensor([int(m[label_key]) for m in batch["metadata"]], device=device)
             logits = model(ids, am)
             loss = F.cross_entropy(logits, labels)
             optimizer.zero_grad(set_to_none=True)
@@ -188,9 +182,7 @@ def _eval_probe(
     for batch in loader:
         ids = batch["binary"]["input_ids"].to(device)
         am = batch["binary"]["attention_mask"].to(device)
-        labels = torch.tensor(
-            [int(m[label_key]) for m in batch["metadata"]], device=device
-        )
+        labels = torch.tensor([int(m[label_key]) for m in batch["metadata"]], device=device)
         logits = model(ids, am)
         preds = logits.argmax(-1)
         correct += int((preds == labels).sum().item())

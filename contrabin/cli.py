@@ -192,9 +192,7 @@ def evaluate_cmd(
         binary_max_length=cfg.data.binary_max_length,
         comment_max_length=cfg.data.comment_max_length,
     )
-    loader = build_dataloader(
-        ds, collator, batch_size=cfg.training.eval_batch_size, shuffle=False
-    )
+    loader = build_dataloader(ds, collator, batch_size=cfg.training.eval_batch_size, shuffle=False)
     trainer = PretrainTrainer(cfg)
     trainer.load(checkpoint)
     loss = trainer.evaluate(loader)
@@ -253,9 +251,7 @@ def embed_cmd(
     model = ContraBinModel(cfg.model)
     ckpt = torch.load(checkpoint, map_location=device)
     model.load_state_dict(ckpt["state_dict"])
-    embeddings, labels = extract_binary_embeddings(
-        model, loader, device=device, label_key="idx"
-    )
+    embeddings, labels = extract_binary_embeddings(model, loader, device=device, label_key="idx")
     output.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
         output, embeddings=embeddings.numpy(), labels=np.asarray(labels, dtype=np.int64)

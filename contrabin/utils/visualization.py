@@ -17,8 +17,7 @@ def _require_matplotlib():
         return plt
     except ImportError as e:  # pragma: no cover - import guarded
         raise ImportError(
-            "Visualization utilities require matplotlib. "
-            "Install with: pip install 'contrabin[viz]'"
+            "Visualization utilities require matplotlib. Install with: pip install 'contrabin[viz]'"
         ) from e
 
 
@@ -68,7 +67,9 @@ def plot_embedding_umap(
         palette = itertools.cycle(plt.cm.tab20.colors)
         for lab in sorted(set(labels)):
             mask = [x == lab for x in labels]
-            ax.scatter(proj[mask, 0], proj[mask, 1], s=6, alpha=0.8, label=str(lab), color=next(palette))
+            ax.scatter(
+                proj[mask, 0], proj[mask, 1], s=6, alpha=0.8, label=str(lab), color=next(palette)
+            )
         ax.legend(fontsize=7, loc="best", markerscale=2)
     ax.set_xlabel("UMAP-1")
     ax.set_ylabel("UMAP-2")

@@ -75,7 +75,7 @@ class TinyEncoder(nn.Module):
         input_ids: torch.Tensor,
         attention_mask: torch.Tensor | None = None,
         **_: Any,
-    ) -> torch.Tensor:
+    ) -> Any:
         positions = torch.arange(input_ids.size(1), device=input_ids.device)
         x = self.token_embedding(input_ids) + self.position_embedding(positions)
         key_padding_mask = None
@@ -84,7 +84,7 @@ class TinyEncoder(nn.Module):
         hidden = self.encoder(x, src_key_padding_mask=key_padding_mask)
 
         class _Out:
-            pass
+            last_hidden_state: torch.Tensor
 
         out = _Out()
         out.last_hidden_state = hidden
@@ -129,7 +129,7 @@ class AnchoredEncoder(_BaseEncoder):
         for p in self.backbone.parameters():
             p.requires_grad_(False)
 
-    def train(self, mode: bool = True) -> AnchoredEncoder:  # type: ignore[override]
+    def train(self, mode: bool = True) -> AnchoredEncoder:
         super().train(mode)
         self.backbone.eval()
         return self
@@ -148,9 +148,7 @@ def _build_backbone(name: str, hidden_dim: int) -> nn.Module:
     if name == "contrabin-tiny":
         return TinyEncoder(hidden_dim=hidden_dim)
     if not _HAS_HF:
-        raise RuntimeError(
-            "transformers is not installed; cannot load a HuggingFace backbone."
-        )
+        raise RuntimeError("transformers is not installed; cannot load a HuggingFace backbone.")
     return AutoModel.from_pretrained(name)
 
 

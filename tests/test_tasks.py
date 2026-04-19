@@ -146,9 +146,7 @@ def test_compiler_provenance(tiny_config, tiny_triplets):
         languages=["c", "cpp", "rust"],
     )
     model = CompilerProvenanceModel(backbone, label_space=label_space)
-    history = train_compiler_provenance(
-        model, train_loader, val_loader, num_epochs=1, device="cpu"
-    )
+    history = train_compiler_provenance(model, train_loader, val_loader, num_epochs=1, device="cpu")
     entry = history[-1]
     assert 0.0 <= entry["compiler_accuracy"] <= 1.0
     assert 0.0 <= entry["opt_level_accuracy"] <= 1.0

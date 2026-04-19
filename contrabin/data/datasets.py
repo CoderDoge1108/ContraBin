@@ -70,10 +70,22 @@ def build_synthetic_triplets(
     rng = random.Random(seed)
     records = []
     templates = [
-        ("int add(int a, int b) {{ return a + b; }}", "%0 = add i32 %a, %b", "add: sums two integers"),
-        ("int sub(int a, int b) {{ return a - b; }}", "%0 = sub i32 %a, %b", "sub: subtracts two integers"),
-        ("int mul(int a, int b) {{ return a * b; }}", "%0 = mul i32 %a, %b", "mul: multiplies two integers"),
-        ("int id(int x) {{ return x; }}",              "ret i32 %x",         "id: returns its argument"),
+        (
+            "int add(int a, int b) {{ return a + b; }}",
+            "%0 = add i32 %a, %b",
+            "add: sums two integers",
+        ),
+        (
+            "int sub(int a, int b) {{ return a - b; }}",
+            "%0 = sub i32 %a, %b",
+            "sub: subtracts two integers",
+        ),
+        (
+            "int mul(int a, int b) {{ return a * b; }}",
+            "%0 = mul i32 %a, %b",
+            "mul: multiplies two integers",
+        ),
+        ("int id(int x) {{ return x; }}", "ret i32 %x", "id: returns its argument"),
     ]
     for i in range(n):
         src_tmpl, bin_tmpl, cmt_tmpl = templates[i % len(templates)]

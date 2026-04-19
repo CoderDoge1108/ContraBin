@@ -109,7 +109,10 @@ def train_summarization(
     optim = torch.optim.AdamW(
         [
             {"params": model.backbone.parameters(), "lr": lr},
-            {"params": [p for n, p in model.named_parameters() if not n.startswith("backbone")], "lr": head_lr},
+            {
+                "params": [p for n, p in model.named_parameters() if not n.startswith("backbone")],
+                "lr": head_lr,
+            },
         ]
     )
     history: list[dict[str, float]] = []

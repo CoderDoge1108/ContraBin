@@ -49,7 +49,9 @@ class NonLinearProjectionHead(nn.Module):
         return self.layer_norm(h)
 
 
-def build_head(head_type: str, embedding_dim: int, projection_dim: int, dropout: float) -> nn.Module:
+def build_head(
+    head_type: str, embedding_dim: int, projection_dim: int, dropout: float
+) -> nn.Module:
     if head_type == "linear":
         return LinearProjectionHead(embedding_dim, projection_dim, dropout)
     if head_type == "nonlinear":

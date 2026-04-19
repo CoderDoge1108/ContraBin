@@ -31,9 +31,7 @@ def token_accuracy(
     return float((p == t).float().mean().item())
 
 
-def retrieval_accuracy(
-    embeddings: torch.Tensor, labels: Sequence[int], k: int = 1
-) -> float:
+def retrieval_accuracy(embeddings: torch.Tensor, labels: Sequence[int], k: int = 1) -> float:
     """Top-k retrieval accuracy (leave-one-out nearest neighbors).
 
     For each sample, check whether at least one of its top-k most similar
@@ -115,9 +113,7 @@ def subtoken_f1(hypotheses: Iterable[Iterable[str]], references: Iterable[Iterab
     return float(np.mean(scores)) if scores else 0.0
 
 
-def mean_average_precision(
-    embeddings: torch.Tensor, labels: Sequence[int]
-) -> float:
+def mean_average_precision(embeddings: torch.Tensor, labels: Sequence[int]) -> float:
     """MAP@R: mean average precision using labels as the ground truth.
 
     Follows the POJ-104 retrieval protocol: for each query we rank all other

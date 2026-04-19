@@ -53,7 +53,10 @@ class _ByteHashTokenizer:
         for i, s in enumerate(text):
             b = s.encode("utf-8", errors="ignore")[: max_length * 4]
             toks = [
-                (int.from_bytes(hashlib.md5(b[j : j + 4]).digest()[:2], "little") % (self.vocab_size - 1))
+                (
+                    int.from_bytes(hashlib.md5(b[j : j + 4]).digest()[:2], "little")
+                    % (self.vocab_size - 1)
+                )
                 + 1
                 for j in range(0, len(b), 4)
             ][:max_length]
@@ -102,6 +105,7 @@ class TripletCollator:
         binaries = [r["binary"] for r in batch]
         comments = [r["comment"] for r in batch]
         metadata = [r.get("metadata", {}) for r in batch]
+        binary_tokenizer = self.binary_tokenizer or self.tokenizer
         return {
             "source": self.tokenizer(
                 sources,
@@ -110,7 +114,7 @@ class TripletCollator:
                 max_length=self.source_max_length,
                 return_tensors="pt",
             ),
-            "binary": self.binary_tokenizer(
+            "binary": binary_tokenizer(
                 binaries,
                 padding="max_length",
                 truncation=True,

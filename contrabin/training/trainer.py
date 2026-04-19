@@ -58,17 +58,13 @@ class PretrainTrainer:
         self.model = model or ContraBinModel(config.model)
         self.model.to(self.device)
 
-        self.primary_loss = PrimaryContrastiveLoss(
-            temperature=config.model.temperature
-        )
-        self.intermediate_loss = IntermediateContrastiveLoss(
-            temperature=config.model.temperature
-        )
+        self.primary_loss = PrimaryContrastiveLoss(temperature=config.model.temperature)
+        self.intermediate_loss = IntermediateContrastiveLoss(temperature=config.model.temperature)
 
         self.curriculum = CurriculumScheduler(config.training.curriculum)
-        self.callbacks: list[Callback] = list(callbacks or [LoggingCallback(
-            log_every_n_steps=config.training.log_every_n_steps
-        )])
+        self.callbacks: list[Callback] = list(
+            callbacks or [LoggingCallback(log_every_n_steps=config.training.log_every_n_steps)]
+        )
         self.state = TrainState(model=self.model)
 
     # ------------------------------------------------------------------
@@ -102,9 +98,7 @@ class PretrainTrainer:
     # ------------------------------------------------------------------
     # Training
     # ------------------------------------------------------------------
-    def fit(
-        self, train_loader: DataLoader, val_loader: DataLoader | None = None
-    ) -> TrainState:
+    def fit(self, train_loader: DataLoader, val_loader: DataLoader | None = None) -> TrainState:
         total_epochs = self.config.training.curriculum.total_epochs()
         total_steps = max(1, total_epochs * max(1, len(train_loader)))
         optimizer = self._build_optimizer()
@@ -137,7 +131,7 @@ class PretrainTrainer:
         self,
         loader: DataLoader,
         optimizer: torch.optim.Optimizer,
-        scheduler: torch.optim.lr_scheduler._LRScheduler,
+        scheduler: torch.optim.lr_scheduler.LRScheduler,
     ) -> float:
         self.model.train()
         total = 0.0

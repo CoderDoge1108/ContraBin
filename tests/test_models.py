@@ -42,7 +42,9 @@ def test_heads_shapes():
 def test_simplex_interpolate_scalar_and_matrix():
     a = torch.ones(4, 8)
     b = torch.zeros(4, 8)
-    torch.testing.assert_close(simplex_interpolate(a, b, torch.tensor(0.5)), torch.full((4, 8), 0.5))
+    torch.testing.assert_close(
+        simplex_interpolate(a, b, torch.tensor(0.5)), torch.full((4, 8), 0.5)
+    )
     lam = torch.rand(4, 8)
     out = simplex_interpolate(a, b, lam)
     torch.testing.assert_close(out, lam)
@@ -76,9 +78,18 @@ def test_simplex_module_stages():
 def test_contrabin_model_forward(tiny_config):
     model = ContraBinModel(tiny_config.model)
     batch = {
-        "source":  {"input_ids": torch.randint(1, 64, (3, 16)), "attention_mask": torch.ones(3, 16, dtype=torch.long)},
-        "binary":  {"input_ids": torch.randint(1, 64, (3, 16)), "attention_mask": torch.ones(3, 16, dtype=torch.long)},
-        "comment": {"input_ids": torch.randint(1, 64, (3, 12)), "attention_mask": torch.ones(3, 12, dtype=torch.long)},
+        "source": {
+            "input_ids": torch.randint(1, 64, (3, 16)),
+            "attention_mask": torch.ones(3, 16, dtype=torch.long),
+        },
+        "binary": {
+            "input_ids": torch.randint(1, 64, (3, 16)),
+            "attention_mask": torch.ones(3, 16, dtype=torch.long),
+        },
+        "comment": {
+            "input_ids": torch.randint(1, 64, (3, 12)),
+            "attention_mask": torch.ones(3, 12, dtype=torch.long),
+        },
     }
     out = model(batch, stage="naive")
     assert out.source.shape == (3, tiny_config.model.projection_dim)
