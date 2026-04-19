@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install ruff mypy
+      - run: pip install ruff mypy types-PyYAML
       - run: ruff check contrabin tests
       - run: ruff format --check contrabin tests
       - run: mypy contrabin --ignore-missing-imports
